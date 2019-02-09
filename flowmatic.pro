@@ -34,7 +34,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     gui/main.qml \
-    gui/FlowNode.qml
+    gui/FlowNode.qml \
+    gui/Schematic.qml
 
 HEADERS += \
     include/FlowGraph.hpp \

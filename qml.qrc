@@ -3,5 +3,6 @@
         <file>qtquickcontrols2.conf</file>
         <file>gui/FlowNode.qml</file>
         <file>gui/main.qml</file>
+        <file>gui/Schematic.qml</file>
     </qresource>
 </RCC>
