@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qtquickcontrols2.conf</file>
+        <file>gui/FlowNode.qml</file>
+        <file>gui/main.qml</file>
+    </qresource>
+</RCC>
