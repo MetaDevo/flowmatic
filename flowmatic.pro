@@ -17,7 +17,8 @@ INCLUDEPATH += $$PWD/gui
 
 SOURCES += \
         main.cpp \
-    src/NodeData.cpp
+    src/NodeData.cpp \
+    gui/GlimpseImage.cpp
 
 RESOURCES += qml.qrc
 
@@ -35,8 +36,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES += \
     gui/main.qml \
     gui/FlowNode.qml \
-    gui/Schematic.qml
+    gui/Schematic.qml \
+    gui/GlimpseScrollView.qml
 
 HEADERS += \
     include/FlowGraph.hpp \
-    include/NodeData.hpp
+    include/NodeData.hpp \
+    gui/GlimpseImage.hpp

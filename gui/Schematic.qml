@@ -6,7 +6,7 @@ import QtQuick.Shapes 1.11
 Rectangle {
     id: schematic
     width: 800
-    height: 600
+    height: 400
     border.width: 1
     border.color: "#85a3e0"
 
@@ -57,7 +57,7 @@ Rectangle {
         }
         FlowNode {
             id: node2
-            inputId: node1.id
+            inputId: node1.nodeId
             inputPos: node1.outSocketPos
             x: gridSize * 6 - width / 2
             y: gridSize * 3 - height / 2
@@ -65,7 +65,7 @@ Rectangle {
         FlowNode {
             id: resultNode
             name: "result"
-            inputId: node2.id
+            inputId: node2.nodeId
             inputPos: node2.outSocketPos
             x: gridSize * 9 - width / 2
             y: gridSize * 5 - height / 2

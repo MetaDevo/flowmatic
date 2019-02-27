@@ -14,9 +14,9 @@ Rectangle {
     color: defaultColor
     border.color: "black"
     property alias name: data.name
-    property alias id: data.id
+    property alias nodeId: data.uniqueId
     property alias inputId: data.inputId
-    property string typeNickname: "+"
+    property string typeNickname: data.typeNickname
     property point inSocketPos: Qt.point(0, height / 2)
     property point outSocketPos: Qt.point(x + width, y + height / 2)
     property point inputPos: inSocketPos
@@ -24,10 +24,11 @@ Rectangle {
     property color defaultColor: "green"
     property color hiliteColor: "light green"
 
+    // interface to a C++ object
     NodeData {
         id: data
         name: "node"
-        value: 100
+        defaultValue: 100
     }
 
     Text {
