@@ -5,9 +5,11 @@
 #include <memory>
 #include <vector>
 
+#include <QHash>
+
 class NodeData;
 
-/// Data pipeline base class
+/// Data pipeline base class. Can be represented visually with the QML item Schematic.
 class FlowGraph
 {
 public:
@@ -19,8 +21,14 @@ public:
         return nextId++;
     }
 
+    static void registerNode(const NodeData* node);
+
+    static const NodeData* nodeAt(const int schematicId, const int nodeId) {
+        return m_registry[schematicId][nodeId];
+    }
+
 private:
-    std::vector<std::shared_ptr<NodeData>> m_nodes;
+    static QHash<int, QHash<int, const NodeData*>> m_registry;
 };
 
 #endif // FLOWGRAPH_HPP

@@ -4,5 +4,6 @@
         <file>gui/FlowNode.qml</file>
         <file>gui/main.qml</file>
         <file>gui/Schematic.qml</file>
+        <file>gui/GlimpseScrollView.qml</file>
     </qresource>
 </RCC>

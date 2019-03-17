@@ -15,10 +15,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 INCLUDEPATH += $$PWD/include
 INCLUDEPATH += $$PWD/gui
 
+HEADERS += \
+    include/FlowGraph.hpp \
+    include/NodeData.hpp \
+    gui/GlimpseImage.hpp \
+    include/NodeBehavior.hpp
+
 SOURCES += \
         main.cpp \
     src/NodeData.cpp \
-    gui/GlimpseImage.cpp
+    gui/GlimpseImage.cpp \
+    src/FlowGraph.cpp
 
 RESOURCES += qml.qrc
 
@@ -38,8 +45,3 @@ DISTFILES += \
     gui/FlowNode.qml \
     gui/Schematic.qml \
     gui/GlimpseScrollView.qml
-
-HEADERS += \
-    include/FlowGraph.hpp \
-    include/NodeData.hpp \
-    gui/GlimpseImage.hpp

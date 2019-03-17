@@ -7,28 +7,33 @@
 #include <QString>
 #include <QQuickWindow>
 
+#include "FlowGraph.hpp"
 #include "GlimpseImage.hpp"
+#include "NodeData.hpp"
 
 GlimpseImage::GlimpseImage()
 {
-    try
-    {
-        setFlag(QQuickItem::ItemHasContents);
-
-        //QObject::connect
-    }
-    catch (const std::exception &e)
-    {
-        qDebug() << "ERROR: " << e.what();
-    }
-    catch (...)
-    {
-        qDebug() << "Unknown exception";
-    }
+    setFlag(QQuickItem::ItemHasContents);
 }
 
 GlimpseImage::~GlimpseImage()
 {
+}
+
+void GlimpseImage::updateConnections()
+{
+    const NodeData* node = FlowGraph::nodeAt(m_schematicId, m_nodeId);
+    if (node) {
+        QObject::connect(node, &NodeData::glimpseChanged, this, &GlimpseImage::setGlimpse);
+    }
+}
+
+void GlimpseImage::setGlimpse(const int schematicId, const int nodeid, const QImage& image)
+{
+    if ((schematicId == m_schematicId) && (nodeid == m_nodeId)) {
+        m_image = image;
+        update();
+    }
 }
 
 QSGNode* GlimpseImage::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *updatePaintNodeData)
@@ -40,28 +45,19 @@ QSGNode* GlimpseImage::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaint
         n = window()->createImageNode();
         n->setOwnsTexture(true);
         n->setFiltering(QSGTexture::Linear);
-        //setWidth();
-        //setHeight();
     }
 
-    QImage image;
-
-    ///@todo get image
-    ///image = m_stack->imageBuffer();
-
-    if (image.isNull()) {
-        qDebug() << "ERROR: image is null!";
+    if (m_image.isNull()) {
         return n;
     }
 
-    QSGTexture* texture = window()->createTextureFromImage(image, QQuickWindow::TextureIsOpaque);
+    QSGTexture* texture = window()->createTextureFromImage(m_image, QQuickWindow::TextureIsOpaque);
 
-    if (!texture)
-    {
+    if (!texture) {
         return n;
     }
+
     n->setTexture(texture);
     n->setRect(0, 0, width(), height());
-    //n->setSourceRect(0, 0, width(), height());
     return n;
 }

@@ -6,15 +6,19 @@ For example, you could use this to make an image processing pipeline and be able
 
 # Running the Demo
 
+[todo]
+
 # How to Use Flowmatic
 
 A node is represented in C++ by NodeData objects. Although decoupled from the UI, NodeData is a Q_OBJECT with properties and methods accessible by QtQuick (QML).
 
 To specialize, you have two options:
 
-1. Use NodeData with composition.
+1. Use NodeData with composition (in C++).
 
-2. Subclass NodeData.
+2. Subclass NodeData (in C++).
+
+3. [todo] Use composition (in QML).
 
 # License
 

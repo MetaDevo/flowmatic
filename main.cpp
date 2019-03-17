@@ -3,6 +3,7 @@
 #include <QQmlApplicationEngine>
 #include <QSurfaceFormat>
 
+#include "GlimpseImage.hpp"
 #include "NodeData.hpp"
 
 int main(int argc, char *argv[])
@@ -11,10 +12,11 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
     qmlRegisterType<NodeData>("flowmatic", 1, 0, "NodeData");
+    qmlRegisterType<GlimpseImage>("flowmatic", 1, 0, "GlimpseImage");
 
     QSurfaceFormat format;
     format.setSamples(8);
-    QSurfaceFormat::setDefaultFormat(format);
+    QSurfaceFormat::setDefaultFormat(format);    
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/gui/main.qml")));
