@@ -21,8 +21,8 @@ public:
     int schematicId() const { return m_schematicId; }
     int getZoom() const { return m_zoom; }
 
-    void setNodeId(const int id) { m_nodeId = id; }
-    void setSchematicId(const int id) { m_schematicId = id; }
+    void setNodeId(const int id) { m_nodeId = id; updateConnections(); }
+    void setSchematicId(const int id) { m_schematicId = id; updateConnections(); }
     void setZoom(const int zoom) { m_zoom = zoom; }
 
 signals:
@@ -35,8 +35,8 @@ private:
     virtual QSGNode* updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *updatePaintNodeData) override;
     void updateConnections();
 
-    int m_nodeId = 0;
-    int m_schematicId = 0;
+    int m_nodeId = -1;
+    int m_schematicId = -1;
     bool m_initted = false;
     int m_zoom = 100;
     QImage m_image;

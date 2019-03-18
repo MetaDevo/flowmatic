@@ -22,9 +22,11 @@ GlimpseImage::~GlimpseImage()
 
 void GlimpseImage::updateConnections()
 {
-    const NodeData* node = FlowGraph::nodeAt(m_schematicId, m_nodeId);
-    if (node) {
-        QObject::connect(node, &NodeData::glimpseChanged, this, &GlimpseImage::setGlimpse);
+    if (m_schematicId >=0 && m_nodeId >=0) {
+        const NodeData* node = FlowGraph::nodeAt(m_schematicId, m_nodeId);
+        if (node) {
+            QObject::connect(node, &NodeData::glimpseChanged, this, &GlimpseImage::setGlimpse);
+        }
     }
 }
 
