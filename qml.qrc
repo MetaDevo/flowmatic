@@ -5,5 +5,7 @@
         <file>gui/main.qml</file>
         <file>gui/Schematic.qml</file>
         <file>gui/GlimpseScrollView.qml</file>
+        <file>gui/FlowmaticWorkspace.qml</file>
+        <file>gui/PropertiesView.qml</file>
     </qresource>
 </RCC>

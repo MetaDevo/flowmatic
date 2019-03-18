@@ -44,4 +44,6 @@ DISTFILES += \
     gui/main.qml \
     gui/FlowNode.qml \
     gui/Schematic.qml \
-    gui/GlimpseScrollView.qml
+    gui/GlimpseScrollView.qml \
+    gui/FlowmaticWorkspace.qml \
+    gui/PropertiesView.qml

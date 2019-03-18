@@ -10,31 +10,47 @@ Rectangle {
     height: 200
     border.width: 1
     border.color: "#85a3e0"
-    color: "#222222"
+    color: "#222222"    
 
     ScrollView {
         anchors.fill: parent
         anchors.margins: 1
         clip: true
         ScrollBar.horizontal.policy: ScrollBar.AlwaysOn
-        ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+        //ScrollBar.vertical.policy: ScrollBar.AlwaysOn
         contentWidth: 1920
         contentHeight: parent.height
 
         Rectangle {
-            color: "#333333"
-            width: 180
-            height: 180
+            border.color: "#777777"
+            border.width: 1
+            width: 182
+            height: 182
+            x: 2
+            y: 2
 
             GlimpseImage {
-
+                schematicId: 0
+                nodeId: 0
+                x: 1
+                y: 1
             }
         }
+
         Rectangle {
-            color: "#333333"
-            width: 180
-            height: 180
-            x: 200
+            border.color: "#777777"
+            border.width: 1
+            width: 182
+            height: 182
+            x: 186
+            y: 2
+
+            GlimpseImage {
+                schematicId: 0
+                nodeId: 1
+                x: 1
+                y: 1
+            }
         }
     }
 }

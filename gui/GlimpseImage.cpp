@@ -40,17 +40,23 @@ void GlimpseImage::setGlimpse(const int schematicId, const int nodeid, const QIm
 
 QSGNode* GlimpseImage::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *updatePaintNodeData)
 {
-    Q_UNUSED(updatePaintNodeData)
-    QSGImageNode* n = static_cast<QSGImageNode*>(oldNode);
+    Q_UNUSED(updatePaintNodeData)    
 
+    if (m_image.isNull()) {
+        qDebug() << "GlimpseImage::updatePaintNode: null image";
+        setWidth(180);
+        setHeight(180);
+        QSGSimpleRectNode* emptyNode = new QSGSimpleRectNode();
+        emptyNode->setColor(Qt::green);
+        emptyNode->setRect(boundingRect());
+        return emptyNode;
+    }
+
+    QSGImageNode* n = static_cast<QSGImageNode*>(oldNode);   
     if (!n) {
         n = window()->createImageNode();
         n->setOwnsTexture(true);
         n->setFiltering(QSGTexture::Linear);
-    }
-
-    if (m_image.isNull()) {
-        return n;
     }
 
     QSGTexture* texture = window()->createTextureFromImage(m_image, QQuickWindow::TextureIsOpaque);

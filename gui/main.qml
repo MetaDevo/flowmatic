@@ -6,18 +6,14 @@ import QtQuick.Shapes 1.11
 ApplicationWindow {
     id: main
     visible: true
-    width: 900
+    width: 1200
     height: 700
     title: qsTr("Flowmatic Demo")
 
-    Schematic {
-        x: 10
-        y: 10
-    }
-    GlimpseScrollView
-    {
-        x: 10
-        y: 410
+    FlowmaticWorkspace {
+        width: 900
+        height: 700
+        x: 0
     }
 
 }
