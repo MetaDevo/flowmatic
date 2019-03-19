@@ -54,11 +54,14 @@ Rectangle {
             }
         }
 
-        // test
+        ////////////////////////////////////////////////////
+        // Example nodes. Remove/change in your application.
         FlowNode {
             id: node1
             x: gridSize * 2 - width / 2
-            y: gridSize * 3 - height / 2
+            y: gridSize * 3 - height / 2            
+            name: "images"
+            typeNickname: "seq"
         }
         FlowNode {
             id: node2
@@ -75,6 +78,7 @@ Rectangle {
             x: gridSize * 9 - width / 2
             y: gridSize * 5 - height / 2
         }
+        ///////////////////////////////////////////////////
     }
 
     Rectangle {

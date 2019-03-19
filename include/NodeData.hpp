@@ -23,6 +23,10 @@ class NodeData : public QObject
     Q_PROPERTY(QVariant defaultValue READ defaultValue WRITE setDefaultValue NOTIFY defaultValueChanged)
     Q_PROPERTY(QString stackLabel READ stackLabel WRITE setStackLabel NOTIFY stackLabelChanged)
     Q_PROPERTY(QString typeNickname READ typeNickname WRITE setTypeNickname NOTIFY typeNicknameChanged)
+    Q_PROPERTY(bool isRunning READ isRunning WRITE setIsRunning NOTIFY isRunningChanged)
+    Q_PROPERTY(int seqStart READ seqStart WRITE setSeqStart NOTIFY seqChanged)
+    Q_PROPERTY(int seqEnd READ seqEnd WRITE setSeqEnd NOTIFY seqChanged)
+    Q_PROPERTY(int seqPos READ seqPos NOTIFY seqPosChanged)
 
 public:
     using ValueType = QMetaType::Type;
@@ -31,13 +35,17 @@ public:
     NodeData(const QString& name, const QVariant value, const int schematicId = 0);
     ~NodeData();
 
+    Q_INVOKABLE QVariant nodeProperty(const QString& key) const { return m_properties[key]; }
     int uniqueId() const { return m_uniqueId; }
     int schematicId() const { return m_schematicId; }
     int inputId(const int index = 0) const { return m_inputId[index]; }
     QString name() const { return m_name; }
     QVariant defaultValue() const { return m_defaultValue; }
     QString stackLabel() const { return m_stackLabel; }
-    Q_INVOKABLE QVariant nodeProperty(const QString& key) const { return m_properties[key]; }
+    bool isRunning() { return m_isRunning; }
+    int seqStart() { return m_seqStart; }
+    int seqEnd() { return m_seqEnd; }
+    int seqPos() { return m_seqPos; }
 
     virtual ValueType defaultType() const { return m_defaultType; }
     virtual QString typeNickname() const { return m_typeNickname; }
@@ -47,13 +55,18 @@ public:
     virtual QVariant result(const int index = 0) const;
 
     Q_INVOKABLE void run();
+
+    Q_INVOKABLE void setNodeProperty(const QString& key, const QVariant& value) { m_properties[key] = value; }
     void setInputId(const int inputId, const int index = 0) { m_inputId[index] = inputId; emit inputIdChanged();}
     void setName(const QString& name) { m_name = name; emit nameChanged(); }
     void setDefaultValue(const QVariant& value) { m_defaultValue = value; emit defaultValueChanged(); }
     void setStackLabel(const QString& label) { m_stackLabel = label; emit stackLabelChanged(); }
     void setTypeNickname(const QString& nickname) { m_typeNickname = nickname; emit typeNicknameChanged(); }
+    void setIsRunning(bool flag) { m_isRunning = flag; emit isRunningChanged(m_isRunning); }
+    void setSeqStart(const int index) { if (index <= m_seqEnd) { m_seqStart = index; emit seqChanged(); } }
+    void setSeqEnd(const int index) { if (index >= m_seqStart) { m_seqEnd = index; emit seqChanged(); } }
+    void Q_INVOKABLE scrub(const int position);
 
-    Q_INVOKABLE void setNodeProperty(const QString& key, const QVariant& value) { m_properties[key] = value; }
     void setBehavior(std::shared_ptr<NodeBehavior> behavior) { m_behavior = behavior; }
 
 signals:
@@ -64,6 +77,9 @@ signals:
     void stackLabelChanged();
     void glimpseChanged(const int schematicId, const int id, const QImage& image);
     void resultChanged();
+    void seqChanged();
+    void seqPosChanged(int);
+    void isRunningChanged(bool);
 
 private:
     QString m_name = "node";
@@ -78,6 +94,10 @@ private:
     std::shared_ptr<NodeBehavior> m_behavior;
     bool m_isStackOp = false;
     QString m_stackLabel;
+    int m_seqStart = 0;
+    int m_seqEnd = 0;
+    int m_seqPos = 0;
+    bool m_isRunning = false;
 };
 
 #endif // NODEDATA_HPP

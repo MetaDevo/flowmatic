@@ -61,7 +61,7 @@ QSGNode* GlimpseImage::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaint
     if (m_image.isNull()) {
         // dummy image as placeholder
         QImage img(180, 180, QImage::Format_RGB32);
-        img.fill(200);
+        img.fill(0);
         setWidth(img.width());
         setHeight(img.height());
         texture = window()->createTextureFromImage(img, QQuickWindow::TextureIsOpaque);

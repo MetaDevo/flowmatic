@@ -8,8 +8,9 @@
 #include <QHash>
 
 class NodeData;
+class NodeBehavior;
 
-/// Data pipeline base class. Can be represented visually with the QML item Schematic.
+/// Data pipeline management. The graph can be represented visually with the QML Schematic and FlowNode items.
 class FlowGraph
 {
 public:
@@ -26,6 +27,8 @@ public:
     static const NodeData* nodeAt(const int schematicId, const int nodeId) {
         return m_registry[schematicId][nodeId];
     }
+
+    static std::shared_ptr<NodeBehavior> behaviorFactory(const QString& behaviorType);
 
 private:
     static QHash<int, QHash<int, const NodeData*>> m_registry;

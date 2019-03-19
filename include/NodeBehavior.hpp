@@ -14,7 +14,9 @@ public:
 
     virtual std::vector<QVariant> run() = 0;
     virtual QImage glimpse() const { return QImage(); }
-    QString glimpseText() const { return QString(); }
+    virtual QString glimpseText() const { return QString(); }
+
+    virtual void setSeqPos(const int position) {}
 };
 
 #endif // NODEBEHAVIOR_HPP
