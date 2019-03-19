@@ -42,30 +42,42 @@ QSGNode* GlimpseImage::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaint
 {
     Q_UNUSED(updatePaintNodeData)    
 
-    if (m_image.isNull()) {
-        qDebug() << "GlimpseImage::updatePaintNode: null image";
-        setWidth(180);
-        setHeight(180);
-        QSGSimpleRectNode* emptyNode = new QSGSimpleRectNode();
-        emptyNode->setColor(Qt::green);
-        emptyNode->setRect(boundingRect());
-        return emptyNode;
-    }
-
     QSGImageNode* n = static_cast<QSGImageNode*>(oldNode);   
     if (!n) {
         n = window()->createImageNode();
+
+        if(!n) {
+            qDebug() << "node is still null";
+        }
+
         n->setOwnsTexture(true);
         n->setFiltering(QSGTexture::Linear);
+        m_imageNodeInitted = true;
+    }
+    n->setRect(0, 0, 180, 180);
+    n->setSourceRect(0, 0, width(), height());
+
+    QSGTexture* texture = nullptr;
+    if (m_image.isNull()) {
+        // dummy image as placeholder
+        QImage img(180, 180, QImage::Format_RGB32);
+        img.fill(200);
+        setWidth(img.width());
+        setHeight(img.height());
+        texture = window()->createTextureFromImage(img, QQuickWindow::TextureIsOpaque);
+    } else {
+        setWidth(m_image.width());
+        setHeight(m_image.height());
+        texture = window()->createTextureFromImage(m_image, QQuickWindow::TextureIsOpaque);
     }
 
-    QSGTexture* texture = window()->createTextureFromImage(m_image, QQuickWindow::TextureIsOpaque);
-
     if (!texture) {
+        qDebug() << "GlimpseImage::updatePaintNode: null texture";
         return n;
     }
 
     n->setTexture(texture);
-    n->setRect(0, 0, width(), height());
+    //n->markDirty(QSGNode::DirtyGeometry);
+
     return n;
 }

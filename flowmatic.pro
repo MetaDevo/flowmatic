@@ -19,7 +19,8 @@ HEADERS += \
     include/FlowGraph.hpp \
     include/NodeData.hpp \
     gui/GlimpseImage.hpp \
-    include/NodeBehavior.hpp
+    include/NodeBehavior.hpp \
+    include/ExampleNodeBehavior.hpp
 
 SOURCES += \
         main.cpp \

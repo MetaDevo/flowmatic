@@ -46,7 +46,7 @@ public:
     virtual QString glimpseText() const;
     virtual QVariant result(const int index = 0) const;
 
-    void run();
+    Q_INVOKABLE void run();
     void setInputId(const int inputId, const int index = 0) { m_inputId[index] = inputId; emit inputIdChanged();}
     void setName(const QString& name) { m_name = name; emit nameChanged(); }
     void setDefaultValue(const QVariant& value) { m_defaultValue = value; emit defaultValueChanged(); }
@@ -54,7 +54,7 @@ public:
     void setTypeNickname(const QString& nickname) { m_typeNickname = nickname; emit typeNicknameChanged(); }
 
     Q_INVOKABLE void setNodeProperty(const QString& key, const QVariant& value) { m_properties[key] = value; }
-    void setBehavior(const std::shared_ptr<NodeBehavior> behavior) { m_behavior = behavior; }
+    void setBehavior(std::shared_ptr<NodeBehavior> behavior) { m_behavior = behavior; }
 
 signals:
     void inputIdChanged();

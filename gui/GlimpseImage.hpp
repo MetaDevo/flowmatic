@@ -40,6 +40,7 @@ private:
     bool m_initted = false;
     int m_zoom = 100;
     QImage m_image;
+    bool m_imageNodeInitted = false;
 };
 
 #endif // GLIMPSEIMAGE_HPP

@@ -2,6 +2,7 @@
 
 #include "FlowGraph.hpp"
 #include "NodeData.hpp"
+#include "ExampleNodeBehavior.hpp"
 
 NodeData::NodeData(const int schematicId) :
     m_schematicId(schematicId)
@@ -9,6 +10,9 @@ NodeData::NodeData(const int schematicId) :
     m_uniqueId = FlowGraph::assignId();
     m_result.push_back(m_defaultValue);
     FlowGraph::registerNode(this);
+
+    std::shared_ptr<NodeBehavior> behavior = std::make_shared<ExampleNodeBehavior>();
+    setBehavior(behavior);
 }
 
 NodeData::NodeData(const QString& name, const QVariant value, const int schematicId) :
@@ -28,7 +32,7 @@ QImage NodeData::glimpse() const
     if (m_behavior) {
         return m_behavior->glimpse();
     } else {
-        return QImage();
+        return QImage(); // this will be a real image in a subclass
     }
 }
 

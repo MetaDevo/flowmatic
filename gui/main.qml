@@ -7,13 +7,11 @@ ApplicationWindow {
     id: main
     visible: true
     width: 1200
-    height: 700
+    height: 800
     title: qsTr("Flowmatic Demo")
 
     FlowmaticWorkspace {
-        width: 900
-        height: 700
-        x: 0
+
     }
 
 }

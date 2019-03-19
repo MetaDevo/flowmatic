@@ -24,6 +24,10 @@ Rectangle {
     property color defaultColor: "green"
     property color hiliteColor: "light green"
 
+    function run() {
+        data.run();
+    }
+
     // interface to a C++ object
     NodeData {
         id: data

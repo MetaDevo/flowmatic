@@ -10,17 +10,22 @@ Rectangle {
     color: "#000000"
 
     Schematic {
+        id: schematicView
         x: 10
         y: 10
     }
     GlimpseScrollView
     {
-        x: 10
-        y: 409
+        //x: schematicView.x
+        //y: schematicView.height
+        anchors.left: schematicView.left
+        anchors.top: schematicView.bottom
     }
     PropertiesView {
-        x: 810
-        y: 10
+        //x: schematicView.width
+        //y: schematicView.y
+        anchors.left: schematicView.right
+        anchors.top: schematicView.top
         width: 300
         height: 400
     }
