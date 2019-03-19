@@ -23,7 +23,7 @@ Rectangle {
     property point outSocketPos: Qt.point(x + width, y + height / 2)
     property point inputPos: inSocketPos
     property point inputPosLocal: Qt.point(inputPos.x - x, inputPos.y - y)
-    property color defaultColor: "#D6A95D"
+    property color defaultColor: "#D6A95D" //"#71624A"
     property color hiliteColor: "#56AF4D"
     property color hoverColor: "#C97E00"
     property bool checkable: false
@@ -38,6 +38,10 @@ Rectangle {
 
     function previewAll() {
         data.previewAll();
+    }
+
+    function scrub(pos) {
+        return data.scrub(pos);
     }
 
     // interface to a C++ object

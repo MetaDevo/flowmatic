@@ -10,7 +10,7 @@ NodeData::NodeData(const int schematicId) :
     m_schematicId(schematicId)
 {
     m_uniqueId = FlowGraph::assignId();
-    m_result.push_back(m_defaultValue);
+    m_result[0] = m_defaultValue;
     FlowGraph::registerNode(this);
 
     std::shared_ptr<NodeBehavior> behavior = std::make_shared<ExampleNodeBehavior>();
@@ -66,7 +66,7 @@ void NodeData::preview()
     QCoreApplication::processEvents(); // make sure gui updates while we run
     if (m_behavior) {
         m_behavior->setSeqPos(m_seqPos);
-        m_result = m_behavior->run();
+        m_result = m_behavior->preview();
         emit glimpseChanged(m_schematicId, m_uniqueId, m_behavior->glimpse());
         emit resultChanged(); // this will cause downstream nodes to run
     }
@@ -86,6 +86,30 @@ void NodeData::previewAll()
         QCoreApplication::processEvents(); // make sure gui updates while we run
         if (m_behavior) {
             m_behavior->setSeqPos(i);
+            m_result = m_behavior->preview();
+            emit glimpseChanged(m_schematicId, m_uniqueId, m_behavior->glimpse());
+            emit resultChanged(); // this will cause downstream nodes to run
+        }
+    }
+
+    m_isRunning = false;
+    emit isRunningChanged(m_isRunning);
+}
+
+/// Reimplement in subclass or call subclass NodeBehavior and call setBehavior() first.
+/// For either case, by default "run" is the same as "preview," but an application might
+/// need "run" to do something beyond "preview" e.g. changing application objects, saving
+/// out to files, slow high-res rendering, etc.
+void NodeData::run()
+{
+    m_isRunning = true;
+    emit isRunningChanged(m_isRunning);
+
+    for (int i = m_seqStart; i <= m_seqEnd; ++i)
+    {
+        QCoreApplication::processEvents(); // make sure gui updates while we run
+        if (m_behavior) {
+            m_behavior->setSeqPos(i);
             m_result = m_behavior->run();
             emit glimpseChanged(m_schematicId, m_uniqueId, m_behavior->glimpse());
             emit resultChanged(); // this will cause downstream nodes to run
@@ -96,21 +120,21 @@ void NodeData::previewAll()
     emit isRunningChanged(m_isRunning);
 }
 
-/// Reimplement if you need the "run" to do something beyond "preview"
-/// e.g. changing application objects, saving out to files, a slow high-res rending, etc.
-void NodeData::run()
-{
-    previewAll();
-}
-
 /// Goto a sequence position.
 /// @position is a 0-based index global to the schematic
-void NodeData::scrub(const int position)
+bool NodeData::scrub(const int position)
 {
-    m_seqPos = m_seqStart + position;
-    emit seqPosChanged(m_seqPos);
-    if (m_behavior) {
-        m_behavior->setSeqPos(m_seqPos);
+    int newPos = m_seqStart + position;
+    if ((m_seqPos != newPos) && (newPos >= m_seqStart) && (newPos <= m_seqEnd))
+    {
+        m_seqPos = newPos;
+        emit seqPosChanged(m_seqPos);
+        if (m_behavior) {
+            m_behavior->setSeqPos(m_seqPos);
+        }
+        return true;
+    } else {
+        return false;
     }
 }
 

@@ -12,6 +12,7 @@ Rectangle {
 
     property int gridSize: 32
     property int navHeight: 34
+    property int seqPos: 0
 
     ScrollView {
         id: scrollContent
@@ -62,6 +63,7 @@ Rectangle {
             y: gridSize * 3 - height / 2            
             name: "images"
             typeNickname: "seq"
+            seqEnd: 2
         }
         FlowNode {
             id: node2
@@ -92,14 +94,49 @@ Rectangle {
         color: "#222222"
 
         Button {
+            id: scrubLeftButton
             icon.source: "qrc:/third-party/material-icons/ic_chevron_left_white_18dp.png"
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.margins: 2
             height: 30
+
+            onClicked: {
+                if (node1.scrub(seqPos - 1)) {
+                    seqPos--;
+                }
+                node1.preview();
+            }
         }
 
         Button {
+            id: scrubRightButton
+            icon.source: "qrc:/third-party/material-icons/ic_chevron_right_white_18dp.png"
+            anchors.left: scrubLeftButton.right
+            anchors.top: parent.top
+            anchors.margins: 2
+            height: 30
+
+            onClicked: {
+                if (node1.scrub(seqPos + 1)) {
+                    seqPos++;
+                }
+                node1.preview();
+            }
+        }
+
+        Text {
+            id: horSeqLabel
+            text: "Frame: " + seqPos
+            color: "#000000"
+            anchors.left: scrubRightButton.right
+            anchors.top: parent.top
+            anchors.margins: 2
+            font.pointSize: 10
+        }
+
+        Button {
+            id: runButton
             text: "Run"
             anchors.right: parent.right
             anchors.top: parent.top
@@ -108,7 +145,7 @@ Rectangle {
 
             onClicked: {
                 node1.run();
-                node1.update();
+                //node1.update();
             }
         }
     }

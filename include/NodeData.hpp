@@ -69,7 +69,7 @@ public:
     void setIsRunning(bool flag) { m_isRunning = flag; emit isRunningChanged(m_isRunning); }
     void setSeqStart(const int index) { if (index <= m_seqEnd) { m_seqStart = index; emit seqChanged(); } }
     void setSeqEnd(const int index) { if (index >= m_seqStart) { m_seqEnd = index; emit seqChanged(); } }
-    Q_INVOKABLE void scrub(const int position);
+    Q_INVOKABLE bool scrub(const int position);
     Q_INVOKABLE void select(const int oldNodeId);
     Q_INVOKABLE void unselect() const;
 
@@ -94,7 +94,7 @@ private:
     int m_uniqueId = -1;
     int m_schematicId = 0;
     QHash<int, int> m_inputId;
-    std::vector<QVariant> m_result;
+    QHash<int, QVariant> m_result;
     QVariant m_defaultValue = 0;
     ValueType m_defaultType = QMetaType::Int;
     QHash<QString, QVariant> m_properties;
