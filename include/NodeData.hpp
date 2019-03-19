@@ -27,6 +27,7 @@ class NodeData : public QObject
     Q_PROPERTY(int seqStart READ seqStart WRITE setSeqStart NOTIFY seqChanged)
     Q_PROPERTY(int seqEnd READ seqEnd WRITE setSeqEnd NOTIFY seqChanged)
     Q_PROPERTY(int seqPos READ seqPos NOTIFY seqPosChanged)
+    Q_PROPERTY(bool isSelected READ isSelected NOTIFY isSelectedChanged)
 
 public:
     using ValueType = QMetaType::Type;
@@ -46,6 +47,7 @@ public:
     int seqStart() { return m_seqStart; }
     int seqEnd() { return m_seqEnd; }
     int seqPos() { return m_seqPos; }
+    bool isSelected() { return m_selected; }
 
     virtual ValueType defaultType() const { return m_defaultType; }
     virtual QString typeNickname() const { return m_typeNickname; }
@@ -54,7 +56,9 @@ public:
     virtual QString glimpseText() const;
     virtual QVariant result(const int index = 0) const;
 
-    Q_INVOKABLE void run();
+    Q_INVOKABLE virtual void preview();
+    Q_INVOKABLE virtual void previewAll();
+    Q_INVOKABLE virtual void run();
 
     Q_INVOKABLE void setNodeProperty(const QString& key, const QVariant& value) { m_properties[key] = value; }
     void setInputId(const int inputId, const int index = 0) { m_inputId[index] = inputId; emit inputIdChanged();}
@@ -65,7 +69,9 @@ public:
     void setIsRunning(bool flag) { m_isRunning = flag; emit isRunningChanged(m_isRunning); }
     void setSeqStart(const int index) { if (index <= m_seqEnd) { m_seqStart = index; emit seqChanged(); } }
     void setSeqEnd(const int index) { if (index >= m_seqStart) { m_seqEnd = index; emit seqChanged(); } }
-    void Q_INVOKABLE scrub(const int position);
+    Q_INVOKABLE void scrub(const int position);
+    Q_INVOKABLE void select(const int oldNodeId);
+    Q_INVOKABLE void unselect() const;
 
     void setBehavior(std::shared_ptr<NodeBehavior> behavior) { m_behavior = behavior; }
 
@@ -80,6 +86,7 @@ signals:
     void seqChanged();
     void seqPosChanged(int);
     void isRunningChanged(bool);
+    void isSelectedChanged(bool) const;
 
 private:
     QString m_name = "node";
@@ -98,6 +105,7 @@ private:
     int m_seqEnd = 0;
     int m_seqPos = 0;
     bool m_isRunning = false;
+    mutable bool m_selected = false;
 };
 
 #endif // NODEDATA_HPP

@@ -11,7 +11,7 @@ Rectangle {
     height: 48
     radius: 6
     border.width: 1
-    color: defaultColor
+    color: data.isSelected ? hiliteColor : defaultColor
     border.color: "black"
     property alias name: data.name
     property alias nodeId: data.uniqueId
@@ -23,12 +23,21 @@ Rectangle {
     property point outSocketPos: Qt.point(x + width, y + height / 2)
     property point inputPos: inSocketPos
     property point inputPosLocal: Qt.point(inputPos.x - x, inputPos.y - y)
-    property color defaultColor: "#7D6F57"
-    property color hiliteColor: "#A08861"
+    property color defaultColor: "#D6A95D"
+    property color hiliteColor: "#56AF4D"
+    property color hoverColor: "#C97E00"
     property bool checkable: false
 
     function run() {
         data.run();
+    }
+
+    function preview() {
+        data.preview();
+    }
+
+    function previewAll() {
+        data.previewAll();
     }
 
     // interface to a C++ object
@@ -63,9 +72,9 @@ Rectangle {
         width: 8
         height: 8
         radius: 6
-        color: data.isRunning ? "#35992B" : "black"
+        color: data.isRunning ? "#10A400" : "black"
         border.width: 1
-        border.color: data.isRunning ? "#2F5A2B" : "#5F5340"
+        border.color: data.isRunning ? "#71624A" : "#181613"
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         anchors.rightMargin: 4
@@ -76,7 +85,7 @@ Rectangle {
     ///@todo hook up multiple lines for nodes with multiple inputs
     Shape {
         ShapePath {
-            strokeColor: "#5E436A"
+            strokeColor: "#6D447F"
             strokeWidth: 3
             fillColor: "transparent"
             //capStyle: ShapePath.RoundCap
@@ -109,21 +118,23 @@ Rectangle {
         drag.axis: Drag.XAndYAxis
 
         onEntered: {
-            flowNode.color = hiliteColor;
+            //flowNode.color = hoverColor;
         }
         onExited: {
-            if (!pressed) {
-                flowNode.color = defaultColor;
-            }
+//            if (!pressed && !data.isSelected) {
+//                flowNode.color = defaultColor;
+//            }
         }
         onPressed: {
-            flowNode.color = hiliteColor;
+            //flowNode.color = hiliteColor;
         }
         onReleased: {
-            flowNode.color = defaultColor;            
+            //flowNode.color = defaultColor;
         }
         onPressAndHold: mouse.accepted = false
         onClicked: {
+            data.select(selectedNode);
+            selectedNode = data.uniqueId;
         }
     }
 }

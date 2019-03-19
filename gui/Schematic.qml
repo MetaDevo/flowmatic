@@ -92,8 +92,16 @@ Rectangle {
         color: "#222222"
 
         Button {
-            text: "Run"
+            icon.source: "qrc:/third-party/material-icons/ic_chevron_left_white_18dp.png"
             anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.margins: 2
+            height: 30
+        }
+
+        Button {
+            text: "Run"
+            anchors.right: parent.right
             anchors.top: parent.top
             anchors.margins: 2
             height: 30

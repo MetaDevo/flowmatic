@@ -8,6 +8,7 @@ Rectangle {
     id: flowmaticWorkspace
     visible: true
     color: "#000000"
+    property int selectedNode: -1
 
     Schematic {
         id: schematicView

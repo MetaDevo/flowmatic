@@ -57,8 +57,26 @@ QVariant NodeData::result(const int index) const
     }
 }
 
-/// reimplement in subclass, or call setBehavior() first
-void NodeData::run()
+/// Reimplement in subclass or call setBehavior() first
+void NodeData::preview()
+{
+    m_isRunning = true;
+    emit isRunningChanged(m_isRunning);
+
+    QCoreApplication::processEvents(); // make sure gui updates while we run
+    if (m_behavior) {
+        m_behavior->setSeqPos(m_seqPos);
+        m_result = m_behavior->run();
+        emit glimpseChanged(m_schematicId, m_uniqueId, m_behavior->glimpse());
+        emit resultChanged(); // this will cause downstream nodes to run
+    }
+
+    m_isRunning = false;
+    emit isRunningChanged(m_isRunning);
+}
+
+/// Reimplement in subclass or call setBehavior() first
+void NodeData::previewAll()
 {
     m_isRunning = true;
     emit isRunningChanged(m_isRunning);
@@ -67,6 +85,7 @@ void NodeData::run()
     {
         QCoreApplication::processEvents(); // make sure gui updates while we run
         if (m_behavior) {
+            m_behavior->setSeqPos(i);
             m_result = m_behavior->run();
             emit glimpseChanged(m_schematicId, m_uniqueId, m_behavior->glimpse());
             emit resultChanged(); // this will cause downstream nodes to run
@@ -75,6 +94,13 @@ void NodeData::run()
 
     m_isRunning = false;
     emit isRunningChanged(m_isRunning);
+}
+
+/// Reimplement if you need the "run" to do something beyond "preview"
+/// e.g. changing application objects, saving out to files, a slow high-res rending, etc.
+void NodeData::run()
+{
+    previewAll();
 }
 
 /// Goto a sequence position.
@@ -88,3 +114,18 @@ void NodeData::scrub(const int position)
     }
 }
 
+void NodeData::select(const int oldNodeId)
+{
+    const NodeData* node = FlowGraph::nodeAt(m_schematicId, oldNodeId);
+    if (node) {
+        node->unselect();
+    }
+    m_selected = true;
+    emit isSelectedChanged(m_selected);
+}
+
+void NodeData::unselect() const
+{
+    m_selected = false;
+    emit isSelectedChanged(m_selected);
+}
