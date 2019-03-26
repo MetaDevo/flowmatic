@@ -1,6 +1,6 @@
 /// @author Sam Kenyon <sam@metadevo.com>
-#ifndef EXAMPLENODEBEHAVIOR_HPP
-#define EXAMPLENODEBEHAVIOR_HPP
+#ifndef IMAGESEQUENCEBEHAVIOR_HPP
+#define IMAGESEQUENCEBEHAVIOR_HPP
 
 #include <QDebug>
 #include <QImage>
@@ -9,11 +9,11 @@
 #include "NodeBehavior.hpp"
 
 /// Loads a sequence of images
-class ExampleNodeBehavior : public NodeBehavior
+class ImageSequenceBehavior : public NodeBehavior
 {
 public:
-    ExampleNodeBehavior() {}
-    virtual ~ExampleNodeBehavior() {}
+    ImageSequenceBehavior() {}
+    virtual ~ImageSequenceBehavior() {}
 
     virtual QHash<int, QVariant> run()
     {
@@ -28,7 +28,7 @@ public:
         qDebug() << "glimpse img size: " << images[0].value<QImage>().size();
         return images[m_seqPos].value<QImage>();
     }
-    virtual QString glimpseText() const { return QString("example behavior"); }
+    virtual QString glimpseText() const { return QString("image sequence"); }
     virtual void setSeqPos(const int position) { m_seqPos = position; }
 
 private:
@@ -36,4 +36,4 @@ private:
     int m_seqPos = 0;
 };
 
-#endif // EXAMPLENODEBEHAVIOR_HPP
+#endif // IMAGESEQUENCEBEHAVIOR_HPP

@@ -13,8 +13,10 @@ NodeData::NodeData(const int schematicId) :
     m_result[0] = m_defaultValue;
     FlowGraph::registerNode(this);
 
+    ///@todo this is a test, remove later ///////////
     std::shared_ptr<NodeBehavior> behavior = std::make_shared<ExampleNodeBehavior>();
     setBehavior(behavior);
+    ////////////////////////////////////////////////
 }
 
 NodeData::NodeData(const QString& name, const QVariant value, const int schematicId) :

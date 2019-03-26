@@ -20,7 +20,8 @@ HEADERS += \
     include/NodeData.hpp \
     gui/GlimpseImage.hpp \
     include/NodeBehavior.hpp \
-    include/ExampleNodeBehavior.hpp
+    include/ExampleNodeBehavior.hpp \
+    include/ImageSequenceBehavior.hpp
 
 SOURCES += \
         main.cpp \
