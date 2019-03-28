@@ -1,6 +1,6 @@
 # Flowmatic
 
-A generic data flow / pipeline class family with a QML GUI. It's designed to be ready off the shelf for image sequences that run over various dimensions, e.g. time or Z (depth).
+A generic data flow / pipeline class family with a QML GUI. In other words, it's a backend and optional frontend to schematics--dynamic graphs--which perform data transforms and allow for previewing results of each node. It's designed to be ready off the shelf for image sequences that run over various dimensions, e.g. time or Z (depth).
 
 For example, you could use this to make an image processing pipeline and be able to preview intermediate stages. Or you could make a video compositor, or your own visual programming language, or a robot control system.
 
@@ -19,6 +19,11 @@ To specialize, you have two options:
 2. Subclass NodeData (in C++).
 
 3. Use composition (in QML). To specify behaviors, you first in C++ have to register behavior makers with FlowGraph::registerBehaviorMaker().
+
+# Dependencies
+
+- C++11 compiler
+- Qt5
 
 # License
 
