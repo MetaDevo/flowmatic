@@ -1,12 +1,12 @@
 # Flowmatic
 
-A generic data flow / pipeline class family with a QML GUI. In other words, it's a backend and optional schematic frontend to dynamic graphs which perform data transforms and allow for previewing results of each node. It's designed to be ready off the shelf for image sequences that run over various dimensions, e.g. time or Z (depth).
+A generic data flow / pipeline class family with a QML GUI. In other words, it's a backend and optional schematic frontend to dynamic graphs which perform data transformations and allow for previewing results of each node. It's designed to be ready off the shelf for image sequences that run over various dimensions, e.g. time or Z (depth).
 
 For example, you could use this to make an image processing pipeline and be able to preview intermediate stages. Or you could make a video compositor, or your own visual programming language, or a robot control system.
 
 # Running the Demo
 
-[todo]
+Load and build the .pro project in QtCreator. Hit Run.
 
 # How to Use Flowmatic
 
