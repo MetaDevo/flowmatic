@@ -24,17 +24,17 @@ public:
         return nextId++;
     }
 
-    static void registerNode(const NodeData* node);
+    static void registerNode(NodeData* node);
     static void registerBehaviorMaker(const QString& behaviorType, BehaviorMakeFunc makeFunc);
 
-    static const NodeData* nodeAt(const int schematicId, const int nodeId) {
+    static NodeData* nodeAt(const int schematicId, const int nodeId) {
         return m_registry[schematicId][nodeId];
     }
 
     static std::shared_ptr<NodeBehavior> makeBehavior(const QString& behaviorType);
 
 private:
-    static QHash<int, QHash<int, const NodeData*>> m_registry;
+    static QHash<int, QHash<int, NodeData*>> m_registry;
     static QHash<QString, BehaviorMakeFunc> m_behaviorFactory;
 };
 

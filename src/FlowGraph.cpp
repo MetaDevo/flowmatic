@@ -4,10 +4,10 @@
 #include "NodeData.hpp"
 #include "ExampleNodeBehavior.hpp"
 
-QHash<int, QHash<int, const NodeData*>> FlowGraph::m_registry;
+QHash<int, QHash<int, NodeData*>> FlowGraph::m_registry;
 QHash<QString, BehaviorMakeFunc> FlowGraph::m_behaviorFactory;
 
-void FlowGraph::registerNode(const NodeData* node)
+void FlowGraph::registerNode(NodeData* node)
 {
     m_registry[node->schematicId()][node->uniqueId()] = node;
 }

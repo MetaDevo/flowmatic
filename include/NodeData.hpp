@@ -38,6 +38,8 @@ public:
     ~NodeData();
 
     Q_INVOKABLE QVariant nodeProperty(const QString& key) const { return m_properties[key]; }
+    int propertiesSize() const { return m_properties.size(); }
+    QHash<QString, QVariant> properties() const { return m_properties; }
     int uniqueId() const { return m_uniqueId; }
     int schematicId() const { return m_schematicId; }
     int inputId(const int index = 0) const { return m_inputId[index]; }

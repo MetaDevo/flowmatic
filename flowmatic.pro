@@ -22,13 +22,15 @@ HEADERS += \
     include/NodeBehavior.hpp \
     include/ExampleNodeBehavior.hpp \
     include/ImageSequenceBehavior.hpp \
-    include/ImageFlipBehavior.hpp
+    include/ImageFlipBehavior.hpp \
+    include/PropertyAccess.hpp
 
 SOURCES += \
         main.cpp \
     src/NodeData.cpp \
     gui/GlimpseImage.cpp \
-    src/FlowGraph.cpp
+    src/FlowGraph.cpp \
+    src/PropertyAccess.cpp
 
 RESOURCES += qml.qrc
 

@@ -7,7 +7,7 @@ Rectangle {
     id: propertiesView
     border.width: 1
     border.color: "#85a3e0"
-    color: "#222222"    
+    color: "#222222"
 
     ScrollView {
         anchors.fill: parent
