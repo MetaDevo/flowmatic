@@ -1,6 +1,6 @@
 # Flowmatic
 
-A generic data flow / pipeline class family with a QML GUI. In other words, it's a backend and optional schematic frontend to dynamic graphs which perform data transformations and allow for previewing results of each node. It's designed to be ready off the shelf for image sequences that run over various dimensions, e.g. time or Z (depth).
+A generic data flow / pipeline class family with a QML GUI. In other words, it's a backend and optional schematic frontend for dynamic graphs which perform data transformations and allow for previewing results of each node. It's designed to be ready off the shelf for image sequences that run over various dimensions, e.g. time or Z (depth).
 
 For example, you could use this to make an image processing pipeline and be able to preview intermediate stages. Or you could make a video compositor, or your own visual programming language, or a robot control system.
 
@@ -12,7 +12,7 @@ Load and build the .pro project in QtCreator. Hit Run.
 
 A node is represented in C++ by NodeData objects. Although decoupled from the UI, NodeData is a Q_OBJECT with properties and methods accessible by QtQuick (QML).
 
-To specialize, you have two options:
+To specialize, you have three options:
 
 1. Use NodeData with composition (in C++).
 
