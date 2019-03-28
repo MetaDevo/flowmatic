@@ -2,6 +2,7 @@
 #ifndef IMAGESEQUENCEBEHAVIOR_HPP
 #define IMAGESEQUENCEBEHAVIOR_HPP
 
+#include <memory>
 #include <QDebug>
 #include <QImage>
 #include <QVariant>
@@ -15,21 +16,25 @@ public:
     ImageSequenceBehavior() {}
     virtual ~ImageSequenceBehavior() {}
 
-    virtual QHash<int, QVariant> run()
+    virtual QVariant run()
     {
         QString fileName = "example" + QString::number(m_seqPos) + ".jpg";
         QImage img(fileName);
         images[m_seqPos] = img;
         qDebug() << "filename: " << fileName;
-        return images;
+        return images[m_seqPos];
     }
 
     virtual QImage glimpse() const {
         qDebug() << "glimpse img size: " << images[0].value<QImage>().size();
         return images[m_seqPos].value<QImage>();
     }
+
     virtual QString glimpseText() const { return QString("image sequence"); }
+    virtual QVariant result() const { return images[m_seqPos]; }
     virtual void setSeqPos(const int position) { m_seqPos = position; }
+
+    static std::shared_ptr<NodeBehavior> makeBehavior() { return std::make_shared<ImageSequenceBehavior>(); }
 
 private:
     QHash<int, QVariant> images;

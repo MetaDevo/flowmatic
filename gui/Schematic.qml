@@ -63,6 +63,7 @@ Rectangle {
             y: gridSize * 3 - height / 2            
             name: "images"
             typeNickname: "seq"
+            behavior: "imgseq"
             seqEnd: 2
         }
         FlowNode {

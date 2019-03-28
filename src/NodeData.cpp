@@ -13,10 +13,9 @@ NodeData::NodeData(const int schematicId) :
     m_result[0] = m_defaultValue;
     FlowGraph::registerNode(this);
 
-    ///@todo this is a test, remove later ///////////
+    // you can reset to a custom behavior with setBehavior()
     std::shared_ptr<NodeBehavior> behavior = std::make_shared<ExampleNodeBehavior>();
     setBehavior(behavior);
-    ////////////////////////////////////////////////
 }
 
 NodeData::NodeData(const QString& name, const QVariant value, const int schematicId) :
@@ -49,11 +48,12 @@ QString NodeData::glimpseText() const
     }
 }
 
-/// A node can have 1 or many outputs
-QVariant NodeData::result(const int index) const
+/// Whatever the last result was
+/// @todo a node can have 1 or many outputs
+QVariant NodeData::result(const int outputIndex) const
 {
-    if (index < m_result.size()) {
-        return m_result[index];
+    if (m_behavior) {
+        return m_behavior->result();
     } else {
         return defaultValue();
     }
@@ -68,30 +68,9 @@ void NodeData::preview()
     QCoreApplication::processEvents(); // make sure gui updates while we run
     if (m_behavior) {
         m_behavior->setSeqPos(m_seqPos);
-        m_result = m_behavior->preview();
+        m_result[m_seqPos] = m_behavior->preview();
         emit glimpseChanged(m_schematicId, m_uniqueId, m_behavior->glimpse());
-        emit resultChanged(); // this will cause downstream nodes to run
-    }
-
-    m_isRunning = false;
-    emit isRunningChanged(m_isRunning);
-}
-
-/// Reimplement in subclass or call setBehavior() first
-void NodeData::previewAll()
-{
-    m_isRunning = true;
-    emit isRunningChanged(m_isRunning);
-
-    for (int i = m_seqStart; i <= m_seqEnd; ++i)
-    {
-        QCoreApplication::processEvents(); // make sure gui updates while we run
-        if (m_behavior) {
-            m_behavior->setSeqPos(i);
-            m_result = m_behavior->preview();
-            emit glimpseChanged(m_schematicId, m_uniqueId, m_behavior->glimpse());
-            emit resultChanged(); // this will cause downstream nodes to run
-        }
+        emit previewResultChanged(m_seqPos, m_result[0]); // this will cause downstream nodes to run
     }
 
     m_isRunning = false;
@@ -107,14 +86,54 @@ void NodeData::run()
     m_isRunning = true;
     emit isRunningChanged(m_isRunning);
 
+    QCoreApplication::processEvents(); // make sure gui updates while we run
+    if (m_behavior) {
+        m_behavior->setSeqPos(m_seqPos);
+        m_result[m_seqPos] = m_behavior->run();
+        emit glimpseChanged(m_schematicId, m_uniqueId, m_behavior->glimpse());
+        emit runResultChanged(m_seqPos, m_result[0]); // this will cause downstream nodes to run
+    }
+    m_isRunning = false;
+    emit isRunningChanged(m_isRunning);
+}
+
+/// Typically just one node would drive it
+/// @todo proper way to have other top-level (has no inputs) nodes update
+void NodeData::previewAll()
+{
+    m_isRunning = true;
+    emit isRunningChanged(m_isRunning);
+
     for (int i = m_seqStart; i <= m_seqEnd; ++i)
     {
         QCoreApplication::processEvents(); // make sure gui updates while we run
         if (m_behavior) {
             m_behavior->setSeqPos(i);
-            m_result = m_behavior->run();
+            m_result[m_seqPos] = m_behavior->preview();
             emit glimpseChanged(m_schematicId, m_uniqueId, m_behavior->glimpse());
-            emit resultChanged(); // this will cause downstream nodes to run
+            emit previewResultChanged(m_seqPos, m_result[0]); // this will cause downstream nodes to run
+        }
+    }
+
+    m_isRunning = false;
+    emit isRunningChanged(m_isRunning);
+}
+
+/// Typically just one node would drive it
+/// @todo proper way to have other top-level (has no inputs) nodes update
+void NodeData::runAll()
+{
+    m_isRunning = true;
+    emit isRunningChanged(m_isRunning);
+
+    for (int i = m_seqStart; i <= m_seqEnd; ++i)
+    {
+        QCoreApplication::processEvents(); // make sure gui updates while we run
+        if (m_behavior) {
+            m_behavior->setSeqPos(i);
+            m_result[m_seqPos] = m_behavior->run();
+            emit glimpseChanged(m_schematicId, m_uniqueId, m_behavior->glimpse());
+            emit runResultChanged(m_seqPos, m_result[0]); // this will cause downstream nodes to run
         }
     }
 
@@ -140,6 +159,30 @@ bool NodeData::scrub(const int position)
     }
 }
 
+void NodeData::setInputId(const int inputId, const int index)
+{
+    m_inputId[index] = inputId; emit inputIdChanged();
+    for (auto nodeId : m_inputId) {
+        const NodeData* node = FlowGraph::nodeAt(m_schematicId, nodeId);
+        if (node) {
+            QObject::connect(node, &NodeData::previewResultChanged, this, &NodeData::updatePreview);
+            QObject::connect(node, &NodeData::runResultChanged, this, &NodeData::updateRun);
+        }
+    }
+}
+
+void NodeData::updatePreview(const int position, QVariant& result)
+{
+    scrub(position);
+    preview();
+}
+
+void NodeData::updateRun(const int position, QVariant& result)
+{
+    scrub(position);
+    run();
+}
+
 void NodeData::select(const int oldNodeId)
 {
     const NodeData* node = FlowGraph::nodeAt(m_schematicId, oldNodeId);
@@ -154,4 +197,12 @@ void NodeData::unselect() const
 {
     m_selected = false;
     emit isSelectedChanged(m_selected);
+}
+
+void NodeData::setBehaviorByName(const QString& behaviorName)
+{
+    m_behavior = FlowGraph::makeBehavior(behaviorName);
+    if (!m_behavior) {
+        qDebug() << __func__ << "make behavior failed.";
+    }
 }

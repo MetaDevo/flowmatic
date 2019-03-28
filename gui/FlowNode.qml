@@ -17,6 +17,7 @@ Rectangle {
     property alias nodeId: data.uniqueId
     property alias inputId: data.inputId
     property alias typeNickname: data.typeNickname
+    property alias behavior: data.behavior
     property alias seqStart: data.seqStart
     property alias seqEnd: data.seqEnd
     property point inSocketPos: Qt.point(0, height / 2)

@@ -18,7 +18,7 @@ To specialize, you have two options:
 
 2. Subclass NodeData (in C++).
 
-3. [todo] Use composition (in QML).
+3. Use composition (in QML). To specify behaviors, you first in C++ have to register behavior makers with FlowGraph::registerBehaviorMaker().
 
 # License
 

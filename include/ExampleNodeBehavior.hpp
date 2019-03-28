@@ -8,31 +8,22 @@
 
 #include "NodeBehavior.hpp"
 
-/// Loads a sequence of images
 class ExampleNodeBehavior : public NodeBehavior
 {
 public:
     ExampleNodeBehavior() {}
     virtual ~ExampleNodeBehavior() {}
 
-    virtual QHash<int, QVariant> run()
+    virtual QVariant run()
     {
-        QString fileName = "example" + QString::number(m_seqPos) + ".jpg";
-        QImage img(fileName);
-        images[m_seqPos] = img;
-        qDebug() << "filename: " << fileName;
-        return images;
+        qDebug() << "example run on seqPos " << m_seqPos;
+        return QImage();
     }
 
-    virtual QImage glimpse() const {
-        qDebug() << "glimpse img size: " << images[0].value<QImage>().size();
-        return images[m_seqPos].value<QImage>();
-    }
     virtual QString glimpseText() const { return QString("example behavior"); }
     virtual void setSeqPos(const int position) { m_seqPos = position; }
 
 private:
-    QHash<int, QVariant> images;
     int m_seqPos = 0;
 };
 

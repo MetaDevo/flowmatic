@@ -28,6 +28,7 @@ class NodeData : public QObject
     Q_PROPERTY(int seqEnd READ seqEnd WRITE setSeqEnd NOTIFY seqChanged)
     Q_PROPERTY(int seqPos READ seqPos NOTIFY seqPosChanged)
     Q_PROPERTY(bool isSelected READ isSelected NOTIFY isSelectedChanged)
+    Q_PROPERTY(QString behavior WRITE setBehaviorByName)
 
 public:
     using ValueType = QMetaType::Type;
@@ -54,14 +55,15 @@ public:
 
     virtual QImage glimpse() const;
     virtual QString glimpseText() const;
-    virtual QVariant result(const int index = 0) const;
+    virtual QVariant result(const int outputIndex = 0) const;
 
     Q_INVOKABLE virtual void preview();
     Q_INVOKABLE virtual void previewAll();
     Q_INVOKABLE virtual void run();
+    Q_INVOKABLE virtual void runAll();
 
     Q_INVOKABLE void setNodeProperty(const QString& key, const QVariant& value) { m_properties[key] = value; }
-    void setInputId(const int inputId, const int index = 0) { m_inputId[index] = inputId; emit inputIdChanged();}
+    void setInputId(const int inputId, const int index = 0);
     void setName(const QString& name) { m_name = name; emit nameChanged(); }
     void setDefaultValue(const QVariant& value) { m_defaultValue = value; emit defaultValueChanged(); }
     void setStackLabel(const QString& label) { m_stackLabel = label; emit stackLabelChanged(); }
@@ -69,11 +71,16 @@ public:
     void setIsRunning(bool flag) { m_isRunning = flag; emit isRunningChanged(m_isRunning); }
     void setSeqStart(const int index) { if (index <= m_seqEnd) { m_seqStart = index; emit seqChanged(); } }
     void setSeqEnd(const int index) { if (index >= m_seqStart) { m_seqEnd = index; emit seqChanged(); } }
+    void setBehaviorByName(const QString& behaviorName);
     Q_INVOKABLE bool scrub(const int position);
     Q_INVOKABLE void select(const int oldNodeId);
     Q_INVOKABLE void unselect() const;
 
     void setBehavior(std::shared_ptr<NodeBehavior> behavior) { m_behavior = behavior; }
+
+public slots:
+    void updatePreview(const int position, QVariant& result);
+    void updateRun(const int position, QVariant& result);
 
 signals:
     void inputIdChanged();
@@ -82,7 +89,8 @@ signals:
     void typeNicknameChanged();
     void stackLabelChanged();
     void glimpseChanged(const int schematicId, const int id, const QImage& image);
-    void resultChanged();
+    void previewResultChanged(const int position, QVariant& result);
+    void runResultChanged(const int position, QVariant& result);
     void seqChanged();
     void seqPosChanged(int);
     void isRunningChanged(bool);

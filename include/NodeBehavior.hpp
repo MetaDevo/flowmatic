@@ -13,15 +13,14 @@ public:
     NodeBehavior() {}
     virtual ~NodeBehavior() {}
 
-    virtual QHash<int, QVariant> run() = 0;
+    virtual QVariant run() = 0;
 
-    /// Reimplement if you need the "run" to do something beyond "preview"
-    /// e.g. changing application objects, saving out to files, a slow high-res rending, etc.
-    virtual QHash<int, QVariant> preview() { return run(); }
+    /// Reimplement if you need preview to do something different, e.g. less permanent
+    virtual QVariant preview() { return run(); }
 
     virtual QImage glimpse() const { return QImage(); }
     virtual QString glimpseText() const { return QString(); }
-
+    virtual QVariant result() const { return QImage(); }
     virtual void setSeqPos(const int position) {}
 };
 

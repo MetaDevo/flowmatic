@@ -5,15 +5,20 @@
 #include "ExampleNodeBehavior.hpp"
 
 QHash<int, QHash<int, const NodeData*>> FlowGraph::m_registry;
+QHash<QString, BehaviorMakeFunc> FlowGraph::m_behaviorFactory;
 
 void FlowGraph::registerNode(const NodeData* node)
 {
     m_registry[node->schematicId()][node->uniqueId()] = node;
 }
 
-/// Optional. Reimplement if you want to use it.
-std::shared_ptr<NodeBehavior> behaviorFactory(const QString& behaviorType)
+void FlowGraph::registerBehaviorMaker(const QString& behaviorType, BehaviorMakeFunc makeFunc)
 {
-    std::shared_ptr<NodeBehavior> behavior = std::make_shared<ExampleNodeBehavior>();
+    m_behaviorFactory[behaviorType] = makeFunc;
+}
+
+std::shared_ptr<NodeBehavior> FlowGraph::makeBehavior(const QString& behaviorType)
+{
+    std::shared_ptr<NodeBehavior> behavior = m_behaviorFactory[behaviorType]();
     return behavior;
 }
