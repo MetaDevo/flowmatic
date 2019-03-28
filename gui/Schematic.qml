@@ -62,7 +62,7 @@ Rectangle {
             x: gridSize * 2 - width / 2
             y: gridSize * 3 - height / 2            
             name: "images"
-            typeNickname: "seq"
+            typeNickname: "imgseq"
             behavior: "imgseq"
             seqEnd: 2
         }
@@ -70,6 +70,9 @@ Rectangle {
             id: node2
             inputId: node1.nodeId
             inputPos: node1.outSocketPos
+            typeNickname: "imgflip"
+            behavior: "imgflip"
+            seqEnd: 2
             x: gridSize * 6 - width / 2
             y: gridSize * 3 - height / 2
         }
@@ -129,7 +132,7 @@ Rectangle {
         Text {
             id: horSeqLabel
             text: "Frame: " + seqPos
-            color: "#000000"
+            color: "#AAAAAA"
             anchors.left: scrubRightButton.right
             anchors.top: parent.top
             anchors.margins: 2

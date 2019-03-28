@@ -21,7 +21,8 @@ HEADERS += \
     gui/GlimpseImage.hpp \
     include/NodeBehavior.hpp \
     include/ExampleNodeBehavior.hpp \
-    include/ImageSequenceBehavior.hpp
+    include/ImageSequenceBehavior.hpp \
+    include/ImageFlipBehavior.hpp
 
 SOURCES += \
         main.cpp \

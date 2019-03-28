@@ -79,8 +79,8 @@ public:
     void setBehavior(std::shared_ptr<NodeBehavior> behavior) { m_behavior = behavior; }
 
 public slots:
-    void updatePreview(const int position, QVariant& result);
-    void updateRun(const int position, QVariant& result);
+    void updatePreview(const int nodeId, const int position, QVariant* result);
+    void updateRun(const int nodeId, const int position, QVariant* result);
 
 signals:
     void inputIdChanged();
@@ -89,8 +89,8 @@ signals:
     void typeNicknameChanged();
     void stackLabelChanged();
     void glimpseChanged(const int schematicId, const int id, const QImage& image);
-    void previewResultChanged(const int position, QVariant& result);
-    void runResultChanged(const int position, QVariant& result);
+    void previewResultChanged(const int nodeId, const int position, QVariant* result);
+    void runResultChanged(const int nodeId, const int position, QVariant* result);
     void seqChanged();
     void seqPosChanged(int);
     void isRunningChanged(bool);
@@ -102,7 +102,8 @@ private:
     int m_uniqueId = -1;
     int m_schematicId = 0;
     QHash<int, int> m_inputId;
-    QHash<int, QVariant> m_result;
+    QHash<int, QVariant*> m_inputs;
+    //QHash<int, QVariant> m_result;
     QVariant m_defaultValue = 0;
     ValueType m_defaultType = QMetaType::Int;
     QHash<QString, QVariant> m_properties;

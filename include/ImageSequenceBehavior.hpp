@@ -16,13 +16,13 @@ public:
     ImageSequenceBehavior() {}
     virtual ~ImageSequenceBehavior() {}
 
-    virtual QVariant run()
+    virtual QVariant* run(const QHash<int, QVariant*>& inputs)
     {
         QString fileName = "example" + QString::number(m_seqPos) + ".jpg";
         QImage img(fileName);
         images[m_seqPos] = img;
         qDebug() << "filename: " << fileName;
-        return images[m_seqPos];
+        return &images[m_seqPos];
     }
 
     virtual QImage glimpse() const {

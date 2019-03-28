@@ -8,16 +8,17 @@
 
 #include "NodeBehavior.hpp"
 
+/// example that doesn't do anything
 class ExampleNodeBehavior : public NodeBehavior
 {
 public:
     ExampleNodeBehavior() {}
     virtual ~ExampleNodeBehavior() {}
 
-    virtual QVariant run()
+    virtual QVariant* run(const QHash<int, QVariant*>& inputs)
     {
         qDebug() << "example run on seqPos " << m_seqPos;
-        return QImage();
+        return nullptr;
     }
 
     virtual QString glimpseText() const { return QString("example behavior"); }

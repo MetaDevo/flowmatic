@@ -5,6 +5,7 @@
 
 #include "FlowGraph.hpp"
 #include "GlimpseImage.hpp"
+#include "ImageFlipBehavior.hpp"
 #include "ImageSequenceBehavior.hpp"
 #include "NodeData.hpp"
 
@@ -14,6 +15,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     FlowGraph::registerBehaviorMaker("imgseq", BehaviorMakeFunc(ImageSequenceBehavior::makeBehavior));
+    FlowGraph::registerBehaviorMaker("imgflip", BehaviorMakeFunc(ImageFlipBehavior::makeBehavior));
 
     qmlRegisterType<NodeData>("flowmatic", 1, 0, "NodeData");
     qmlRegisterType<GlimpseImage>("flowmatic", 1, 0, "GlimpseImage");
