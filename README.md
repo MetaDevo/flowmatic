@@ -27,7 +27,7 @@ To specialize, you have three options:
 
 # License
 
-Copyright (c) 2018-2019 Samuel H. Kenyon. All Rights Reserved. The source code and any icons use the MIT License, which basically means it's free for personal or for commercial uses.
+Copyright (c) 2018-2020 Samuel H. Kenyon. All Rights Reserved. See `LICENSE`.
 
 # Contact
 
